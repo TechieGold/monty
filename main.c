@@ -13,4 +13,11 @@ int main(int argc, char **argv)
 		printf("USAGE: %s\n", argv[0]);
 		return (EXIT_FAILURE);
 	}
+
+	FILE *file = fopen(argv[1], "r");
+	if (!file)
+	{
+		printf("Can't open file %s\n", argv[1]);
+		return (EXIT_FAILURE);
+	}
 }
