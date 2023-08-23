@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define UNUSED(x) (void)(x)
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)

@@ -3,5 +3,16 @@
 
 
 
+/**
+ * main - Entry point
+ * @argc: Argument count
+ * @argv:  Array of program arguments
+ * Return: Always 0.
+ */
+int main(int argc, char **argv)
+{
+	UNUSED(argc);
+	UNUSED(argv);
 
-int main(int argc, char **argv);
+	return (0);
+}
