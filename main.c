@@ -3,6 +3,10 @@
 
 
 
+monty_t *monty = NULL;
+
+
+
 /**
  * main - Entry point
  * @argc: Argument count
@@ -11,8 +15,8 @@
  */
 int main(int argc, char **argv)
 {
-	UNUSED(argc);
-	UNUSED(argv);
+	init_interpreter(&monty, argc, argv);
+	init_ops_list(&(monty->opcodes));
 
 	return (0);
 }

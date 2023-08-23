@@ -7,6 +7,8 @@
 
 #define UNUSED(x) (void)(x)
 
+#define MAX_ARGS 2
+
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -37,5 +39,52 @@ typedef struct instruction_s
         char *opcode;
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
+
+typedef struct op_node_tag
+{
+	instruction_t *instruction;
+	struct op_node_tag *next;
+} op_node_t;
+
+typedef struct ops_list_tag
+{
+	int count;
+	op_node_t *head;
+} ops_list_t;
+
+typedef struct monty
+{
+	ops_list_t *opcodes;
+	short mode;
+	stack_t *monty_stack;
+	stack_t *tail;
+	char **top;
+} monty_t;
+
+
+extern monty_t* monty;
+
+
+
+void init_interpreter(monty_t **monty,int argc,char ** argv);
+
+void init_ops_list(ops_list_t **ops_list);
+
+int parse_command(char *input, monty_t *monty);
+
+void sanitize_input(char *input);
+
+void trim_input(char *input);
+
+char **tokenize_args(char *line, int *num_tokens);
+
+void handle_command(char **args, int ln);
+
+
+
+
+
+
+
 
 #endif
