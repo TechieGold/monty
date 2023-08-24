@@ -1,5 +1,6 @@
 #include "monty.h"
 
+void hello(void);
 monty_t *monty = NULL;
 
 /**
