@@ -84,21 +84,26 @@ void op_add(stack_t **stack, unsigned int line_number)
  */
 void op_swap(stack_t **stack, unsigned int line_number)
 {
+	if (monty->monty_stack && (monty->monty_stack->next))
+	{
+		stack_t *first = monty->monty_stack;
+		stack_t *second = first->next;
 
-	stack_t *t1 = NULL;
-	stack_t *t2 = NULL;
+		first->next = second->next;
+		if (second->next)
+			second->next->prev = first;
 
-	t1 = monty->monty_stack;
-	t2 = t1->next;
+		second->next = first;
+		second->prev = NULL;
+		first->prev = second;
 
-	if (t2 == NULL)
+		monty->monty_stack = second;
+	}
+	else
 	{
 		fprintf(stderr, "L%d: can't swap, stack too short\n", monty->current_line);
 		exit(EXIT_FAILURE);
 	}
-
-	printf("T1: %d\n", t1->n);
-	printf("T2: %d\n", t2->n);
 
 	UNUSED(stack);
 	UNUSED(line_number);
