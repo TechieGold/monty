@@ -1,7 +1,6 @@
-#include "ops.h"
-#include "utils.h"
-
 #include <ctype.h>
+
+#include "monty.h"
 
 /**
  * ops_add_op - Adds an operation callback to the operations list

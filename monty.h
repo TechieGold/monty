@@ -111,4 +111,53 @@ int parse_command(char *input, monty_t *monty, int ln);
 
 void handle_command(char **args, int ln);
 
+
+
+/* Utility functions to support the program */
+
+char *_strdup(char *str);
+
+void sanitize_input(char *input);
+
+void trim_input(char *input);
+
+char **tokenize_args(char *line, int *num_tokens);
+
+int is_blank_str(const char *string);
+
+int check_digit(const char *number);
+
+void list_push_front(stack_t **stack, int n);
+
+void list_push_back(stack_t **stack, int n);
+
+void list_pop_front(stack_t **stack);
+
+void list_pop_back(stack_t **stack);
+
+
+
+/* Functions for the opcode management */
+
+typedef void (*op_callback)(stack_t **stack, unsigned int line_number);
+
+void ops_add_op(char *code, op_callback callback);
+
+op_node_t *ops_search(const char *opcode);
+
+
+void op_push(stack_t **stack, unsigned int line_number);
+
+void op_pall(stack_t **stack, unsigned int line_number);
+
+void op_pint(stack_t **stack, unsigned int line_number);
+
+void op_pop(stack_t **stack, unsigned int line_number);
+
+void op_swap(stack_t **stack, unsigned int line_number);
+
+void op_add(stack_t **stack, unsigned int line_number);
+
+void op_nop(stack_t **stack, unsigned int line_number);
+
 #endif

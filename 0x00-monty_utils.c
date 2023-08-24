@@ -1,8 +1,9 @@
-#include "monty.h"
-#include "ops.h"
-
 #include <string.h>
 #include <ctype.h>
+
+#include "monty.h"
+
+
 
 /**
  * _strdup - A function that returns a pointer

@@ -1,6 +1,4 @@
-#include "utils.h"
 #include "monty.h"
-#include "ops.h"
 
 
 /**
