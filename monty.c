@@ -53,6 +53,9 @@ void init_ops_list(ops_list_t **ops_list)
 
 	ops_add_op("push", op_push);
 	ops_add_op("pall", op_pall);
+	ops_add_op("pint", op_pint);
+	ops_add_op("pop", op_pop);
+	
 	/* Add support for more opcodes here */
 }
 

@@ -134,6 +134,21 @@ void op_pall(stack_t **stack, unsigned int line_number)
 	}
 }
 
+void op_pint(stack_t **stack, unsigned int line_number)
+{
+	if(monty->monty_stack == NULL){
+		fprintf(stderr, "L%d: can't pint, stack empty\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+
+	printf("%d\n", monty->monty_stack->n);
+}
+
+void op_pop(stack_t **stack, unsigned int line_number)
+{
+	
+}
+
 void list_push_front(stack_t **list, int n)
 {
 	stack_t *new_node;
