@@ -1,11 +1,50 @@
 #include "ops.h"
 #include "utils.h"
 
+#include <ctype.h>
 
-void ops_add_op(ops_list_t *list, char *code, op_callback callback)
+int _isdigit(int c)
+{
+	if (c >= '0' && c <= '9')
+	{
+		return (1);
+	}
+	else
+	{
+		return (0);
+	}
+}
+
+int check_digit(const char *number)
+{
+	if (number == NULL || *number == '\0')
+	{
+		return 0;
+	}
+
+	if (*number == '-')
+	{
+		number++;
+	}
+
+	while (*number != '\0')
+	{
+		if (!_isdigit(*number))
+		{
+			return 0;
+		}
+		number++;
+	}
+
+	return 1;
+}
+
+void ops_add_op(char *code, op_callback callback)
 {
 	op_node_t *node;
+	ops_list_t *list;
 
+	list = monty->opcodes;
 	node = (op_node_t *)malloc(sizeof(op_node_t));
 
 	if (node != NULL)
@@ -36,27 +75,45 @@ void ops_add_op(ops_list_t *list, char *code, op_callback callback)
 
 op_node_t *ops_search(const char *opcode)
 {
-	UNUSED(opcode);
+	op_node_t *node;
+
+	node = monty->opcodes->head;
+	while (node != NULL)
+	{
+		if (strcmp(node->instruction->opcode, opcode) == 0)
+		{
+			return node;
+		}
+		node = node->next;
+	}
 	return NULL;
 }
 
-
 void op_push(stack_t **stack, unsigned int line_number)
 {
-	UNUSED(line_number);
-	if (monty->mode == 0)
+
+	if (monty->top[1] == NULL || check_digit(monty->top[1]) == 0)
+	{
+		fprintf(stderr, "L%d: usage: push integer\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	else if (monty->mode == 0)
+	{
 		list_push_front(stack, atoi(monty->top[1]));
+	}
 	else
+	{
 		list_push_back(stack, atoi(monty->top[1]));
+	}
 }
 
 void op_pall(stack_t **stack, unsigned int line_number)
 {
 	stack_t *node;
-	
+
 	UNUSED(stack);
 	UNUSED(line_number);
-	
+
 	if (monty->mode == 0)
 	{
 		node = monty->monty_stack;
@@ -76,7 +133,6 @@ void op_pall(stack_t **stack, unsigned int line_number)
 		}
 	}
 }
-
 
 void list_push_front(stack_t **list, int n)
 {
@@ -110,17 +166,16 @@ void list_push_front(stack_t **list, int n)
 	{
 		monty->tail = new_node;
 	}
-
 }
 
 void list_push_back(stack_t **list, int n)
 {
 	stack_t *new_node;
-	
+
 	UNUSED(list);
-	
+
 	new_node = malloc(sizeof(stack_t));
-	
+
 	if (new_node == NULL)
 	{
 		fprintf(stderr, "Memory allocation error\n");
@@ -200,5 +255,3 @@ void list_pop_back(stack_t **list)
 
 	free(current);
 }
-
-

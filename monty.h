@@ -70,7 +70,7 @@ void init_interpreter(monty_t **monty,int argc,char ** argv);
 
 void init_ops_list(ops_list_t **ops_list);
 
-int parse_command(char *input, monty_t *monty);
+int parse_command(char *input, monty_t *monty, int ln);
 
 void sanitize_input(char *input);
 

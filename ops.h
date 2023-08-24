@@ -7,7 +7,7 @@ typedef void (*op_callback)(stack_t **stack, unsigned int line_number);
 
 
 
-void ops_add_op(ops_list_t *op_list,char *code, op_callback callback);
+void ops_add_op(char *code, op_callback callback);
 
 op_node_t *ops_search(const char *opcode);
 

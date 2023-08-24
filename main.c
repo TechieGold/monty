@@ -1,11 +1,6 @@
 #include "monty.h"
 
-
-
-
 monty_t *monty = NULL;
-
-
 
 /**
  * main - Entry point
@@ -15,8 +10,14 @@ monty_t *monty = NULL;
  */
 int main(int argc, char **argv)
 {
+
+	if (argc < 2 || argc > 2)
+	{
+		fprintf(stderr, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
+	}
+
 	init_interpreter(&monty, argc, argv);
-	init_ops_list(&(monty->opcodes));
 
 	return (0);
 }

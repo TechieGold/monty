@@ -4,9 +4,6 @@
 #include <string.h>
 #include <ctype.h>
 
-static int ln = 0;
-
-
 /**
  * _strdup - A function that returns a pointer
  * Description: A function that returns a pointer
@@ -25,7 +22,7 @@ char *_strdup(char *str)
 	{
 		return (NULL);
 	}
-	len = strlen(str) +  1;
+	len = strlen(str) + 1;
 	s_str = malloc(len);
 	if (s_str == NULL)
 	{
@@ -35,9 +32,7 @@ char *_strdup(char *str)
 	memcpy(s_str, str, len);
 
 	return (s_str);
-
 }
-
 
 char **tokenize_args(char *line, int *num_tokens)
 {
@@ -100,7 +95,29 @@ void sanitize_input(char *input)
 	*dest = '\0';
 }
 
-int parse_command(char *input, monty_t *monty)
+int is_blank_str(const char *string)
+{
+	int is_empty = 1;
+
+	if (string == NULL)
+	{
+		return 0;
+	}
+
+	while (*string)
+	{
+		if (!isspace((unsigned char)*string))
+		{
+			is_empty = 0;
+			break;
+		}
+		string++;
+	}
+
+	return is_empty;
+}
+
+int parse_command(char *input, monty_t *monty, int ln)
 {
 	char **args = NULL;
 	int status = 0;
@@ -114,16 +131,19 @@ int parse_command(char *input, monty_t *monty)
 	trim_input(input);
 	sanitize_input(input);
 
-	if (!input || input[0] == '\0' || input[0] == '\n')
-		return (0);
+	if (!input || input[0] == '\0' || input[0] == '\n' || is_blank_str(input) == 1 || strlen(input) == 0)
+	{
+		return 0;
+	}
 
 	delim_space = strchr(input, ' ');
 
 	args = tokenize_args(input, &num_tokens);
 	if (args == NULL)
 		return 0;
-	ln += 1;
+
 	handle_command(args, ln);
+
 	input = NULL;
 
 	for (i = 0; i < num_tokens; i++)

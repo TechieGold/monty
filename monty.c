@@ -1,21 +1,21 @@
 #include "monty.h"
 #include "ops.h"
 
+
+static int ln = 1;
+
 void init_interpreter(monty_t **monty, int argc, char **argv)
 {
 	char buffer[1024];
 	FILE *fptr;
-
-	if (argc < 2 || argc > 2)
-		exit(EXIT_FAILURE);
-
 
 	*monty = (monty_t *)malloc(sizeof(monty_t));
 
 	(*monty)->mode = 0;
 	(*monty)->monty_stack = NULL;
 	(*monty)->tail = NULL;
-	
+
+	init_ops_list(&((*monty)->opcodes));
 
 	fptr = fopen(argv[1], "r");
 
@@ -23,10 +23,20 @@ void init_interpreter(monty_t **monty, int argc, char **argv)
 	{
 		while (fgets(buffer, 1024, fptr) != NULL)
 		{
-			parse_command(buffer, *monty);
+			// buffer[strcspn(buffer, "\n")] = '\0';
+			parse_command(buffer, *monty, ln);
+			ln += 1;
 		}
 		fclose(fptr);
 	}
+	else
+	{
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		exit(EXIT_FAILURE);
+	}
+
+	UNUSED(argc);
+	UNUSED(argv);
 }
 
 void init_ops_list(ops_list_t **ops_list)
@@ -35,37 +45,34 @@ void init_ops_list(ops_list_t **ops_list)
 	(*ops_list)->head = NULL;
 	(*ops_list)->count = 0;
 
-	ops_add_op(*ops_list, "push", op_push);
+	if (*ops_list == NULL)
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
+
+	ops_add_op("push", op_push);
+	ops_add_op("pall", op_pall);
 	/* Add support for more opcodes here */
 }
 
-
 void handle_command(char **args, int ln)
 {
-	
+	monty->top = args;
+
 	if (args[0][0] != '#')
 	{
-		if (strcmp(args[0], "queue") == 0)
+
+		op_node_t *opnode = ops_search(args[0]);
+
+		if (opnode != NULL)
 		{
-			printf("queue mode\n");
-			monty->mode = 1;
+			opnode->instruction->f(&(monty->monty_stack), ln);
 		}
-		else if (strcmp(args[0], "stack") == 0)
+		else
 		{
-			printf("stack mode\n");
-			monty->mode = 0;
-		}
-		if (strcmp(args[0], "push") == 0)
-		{
-			monty->top = args;
-			op_push(&(monty->monty_stack), ln);
-		}
-		if (strcmp(args[0], "pall") == 0)
-		{
-			printf("---\n");
-			op_pall(&(monty->monty_stack), ln);
+			fprintf(stderr, "L%d: unknown instruction %s\n", ln, args[0]);
+			exit(EXIT_FAILURE);
 		}
 	}
 }
-
-
