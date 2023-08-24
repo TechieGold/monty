@@ -3,8 +3,6 @@
 
 #include "monty.h"
 
-
-
 /**
  * _strdup - A function that returns a pointer
  * Description: A function that returns a pointer
@@ -34,7 +32,6 @@ char *_strdup(char *str)
 
 	return (s_str);
 }
-
 
 /**
  * tokenize_args - Tokenizes a string into an array of arguments
@@ -71,7 +68,6 @@ char **tokenize_args(char *line, int *num_tokens)
 	return (args);
 }
 
-
 /**
  * trim_input - Trims newline character from the end of the input string
  *
@@ -83,17 +79,29 @@ char **tokenize_args(char *line, int *num_tokens)
  */
 void trim_input(char *input)
 {
-	if (input != NULL)
-	{
-		size_t len = strlen(input);
+	int length, ld_spaces, i;
 
-		if (len > 0 && input[len - 1] == '\n')
-		{
-			input[len - 1] = '\0';
-		}
+	if (input == NULL)
+		return;
+
+	length = strlen(input);
+	ld_spaces = 0;
+
+	while (input[ld_spaces] == ' ' && ld_spaces < length)
+	{
+		ld_spaces++;
+	}
+
+	for (i = 0; i < length - ld_spaces + 1; i++)
+	{
+		input[i] = input[i + ld_spaces];
+	}
+
+	if (length > 0 && input[length - 1] == '\n')
+	{
+		input[length - 1] = '\0';
 	}
 }
-
 
 /**
  * sanitize_input - Sanitizes input string by replacing consecutive
@@ -131,7 +139,6 @@ void sanitize_input(char *input)
 	*dest = '\0';
 }
 
-
 /**
  * is_blank_str - Checks if a string consists of only whitespace characters
  *
@@ -165,5 +172,3 @@ int is_blank_str(const char *string)
 
 	return (is_empty);
 }
-
-

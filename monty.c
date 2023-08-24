@@ -13,10 +13,13 @@
  */
 void init_interpreter(monty_t **monty, int argc, char **argv)
 {
-	char buffer[1024];
+	size_t n;
+	char *buffer;
 	FILE *fptr;
 
 	*monty = (monty_t *)malloc(sizeof(monty_t));
+	buffer = NULL;
+	n = 0;
 
 	(*monty)->mode = 0;
 	(*monty)->monty_stack = NULL;
@@ -29,7 +32,7 @@ void init_interpreter(monty_t **monty, int argc, char **argv)
 
 	if (fptr != NULL)
 	{
-		while (fgets(buffer, 1024, fptr) != NULL)
+		while (getline(&buffer, &n, fptr) != -1)
 		{
 			parse_command(buffer, *monty, (*monty)->current_line);
 			(*monty)->current_line += 1;
@@ -41,7 +44,7 @@ void init_interpreter(monty_t **monty, int argc, char **argv)
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-
+	free(buffer);
 	UNUSED(argc);
 	UNUSED(argv);
 }
@@ -147,6 +150,7 @@ int parse_command(char *input, monty_t *monty, int ln)
 	}
 
 	delim_space = strchr(input, ' ');
+	sanitize_input(input);
 
 	args = tokenize_args(input, &num_tokens);
 	if (args == NULL)

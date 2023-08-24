@@ -10,7 +10,7 @@
 
 #define UNUSED(x) (void)(x)
 
-#define MAX_ARGS 2
+#define MAX_ARGS 1024
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
