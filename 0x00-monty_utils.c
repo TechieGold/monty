@@ -34,6 +34,21 @@ char *_strdup(char *str)
 	return (s_str);
 }
 
+
+/**
+ * tokenize_args - Tokenizes a string into an array of arguments
+ *
+ * This function takes a pointer to an input string (line) and tokenizes it
+ * into an array of arguments. It uses whitespace characters (' ', '\n') as
+ * delimiters to separate the input string into individual tokens. The function
+ * dynamically allocates memory for the array of argument strings and returns
+ * the array along with the number of tokens found.
+ *
+ * @line: Pointer to the input string to be tokenized.
+ * @num_tokens: Pointer to an integer to store the number of tokens found.
+ *
+ * Return: Array of pointers to argument strings.
+ */
 char **tokenize_args(char *line, int *num_tokens)
 {
 	int bufsize;
@@ -55,6 +70,16 @@ char **tokenize_args(char *line, int *num_tokens)
 	return (args);
 }
 
+
+/**
+ * trim_input - Trims newline character from the end of the input string
+ *
+ * This function takes a pointer to an input string (input) and trims the
+ * newline character (`\n`) from the end of the string if it exists. The
+ * function modifies the input string in-place if necessary.
+ *
+ * @input: Pointer to the input string to be trimmed.
+ */
 void trim_input(char *input)
 {
 	if (input != NULL)
@@ -68,6 +93,16 @@ void trim_input(char *input)
 	}
 }
 
+
+/**
+ * sanitize_input - Sanitizes input string by replacing consecutive
+ * spaces with a single space
+ * This function takes a pointer to an input string (input) and sanitizes it by
+ * replacing consecutive spaces with a single space. It processes the
+ * input string in-place, modifying it to remove extra spaces.
+ *
+ * @input: Pointer to the input string to be sanitized.
+ */
 void sanitize_input(char *input)
 {
 	char *src;
@@ -95,13 +130,26 @@ void sanitize_input(char *input)
 	*dest = '\0';
 }
 
+
+/**
+ * is_blank_str - Checks if a string consists of only whitespace characters
+ *
+ * This function takes a string (string) as input and checks if the string
+ * consists of only whitespace characters. It returns true if the string is
+ * composed entirely of whitespace characters, and false otherwise.
+ *
+ * @string: Input string to be checked.
+ *
+ * Return: true if the string is blank (only contains whitespace),
+ * false otherwise.
+ */
 int is_blank_str(const char *string)
 {
 	int is_empty = 1;
 
 	if (string == NULL)
 	{
-		return 0;
+		return (0);
 	}
 
 	while (*string)
@@ -114,44 +162,7 @@ int is_blank_str(const char *string)
 		string++;
 	}
 
-	return is_empty;
+	return (is_empty);
 }
 
-int parse_command(char *input, monty_t *monty, int ln)
-{
-	char **args = NULL;
-	int status = 0;
-	int i;
-	char *delim_space;
-	int num_tokens = 0;
 
-	UNUSED(delim_space);
-	UNUSED(monty);
-
-	trim_input(input);
-	sanitize_input(input);
-
-	if (!input || input[0] == '\0' || input[0] == '\n' || is_blank_str(input) == 1 || strlen(input) == 0)
-	{
-		return 0;
-	}
-
-	delim_space = strchr(input, ' ');
-
-	args = tokenize_args(input, &num_tokens);
-	if (args == NULL)
-		return 0;
-
-	handle_command(args, ln);
-
-	input = NULL;
-
-	for (i = 0; i < num_tokens; i++)
-	{
-		free(args[i]);
-		args[i] = NULL;
-	}
-	free(args);
-	args = NULL;
-	return (status);
-}

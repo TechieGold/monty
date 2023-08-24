@@ -4,9 +4,16 @@ monty_t *monty = NULL;
 
 /**
  * main - Entry point
- * @argc: Argument count
- * @argv:  Array of program arguments
- * Return: Always 0.
+ *
+ * This is the main function that serves as the entry point of the program.
+ * It takes the number of command-line arguments (argc) and an array of
+ * command-line argument strings (argv) as parameters. It typically contains
+ * the program's logic and functionality.
+ *
+ * @argc: Number of command-line arguments.
+ * @argv: Array of command-line argument strings.
+ *
+ * Return: The exit status of the program (usually 0 for success).
  */
 int main(int argc, char **argv)
 {

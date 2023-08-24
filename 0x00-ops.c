@@ -3,42 +3,16 @@
 
 #include <ctype.h>
 
-int _isdigit(int c)
-{
-	if (c >= '0' && c <= '9')
-	{
-		return (1);
-	}
-	else
-	{
-		return (0);
-	}
-}
-
-int check_digit(const char *number)
-{
-	if (number == NULL || *number == '\0')
-	{
-		return 0;
-	}
-
-	if (*number == '-')
-	{
-		number++;
-	}
-
-	while (*number != '\0')
-	{
-		if (!_isdigit(*number))
-		{
-			return 0;
-		}
-		number++;
-	}
-
-	return 1;
-}
-
+/**
+ * ops_add_op - Adds an operation callback to the operations list
+ *
+ * This function adds an operation callback function to the operations list
+ * associated with the provided code. It allows associating a code with a
+ * specific operation callback for later retrieval and execution.
+ *
+ * @code: Code string associated with the operation.
+ * @callback: Operation callback function to be added.
+ */
 void ops_add_op(char *code, op_callback callback)
 {
 	op_node_t *node;
@@ -50,7 +24,8 @@ void ops_add_op(char *code, op_callback callback)
 	if (node != NULL)
 	{
 		node->instruction = (instruction_t *)malloc(sizeof(instruction_t));
-		node->instruction->opcode = (char *)malloc(sizeof(char) * (strlen(code) + 1));
+		node->instruction->opcode = (char *)malloc(sizeof(char)
+			* (strlen(code) + 1));
 		strcpy(node->instruction->opcode, code);
 		node->instruction->f = callback;
 		node->next = NULL;
@@ -73,6 +48,17 @@ void ops_add_op(char *code, op_callback callback)
 	list->count++;
 }
 
+/**
+ * ops_search - Searches for an operation node in the operations list
+ *
+ * This function searches for an operation node in the operations list
+ * based on the provided opcode. If a matching operation node is found,
+ * it returns a pointer to that node; otherwise, it returns NULL.
+ *
+ * @opcode: Opcode string to search for in the operations list.
+ *
+ * Return: Pointer to the operation node if found, NULL otherwise.
+ */
 op_node_t *ops_search(const char *opcode)
 {
 	op_node_t *node;
@@ -82,13 +68,24 @@ op_node_t *ops_search(const char *opcode)
 	{
 		if (strcmp(node->instruction->opcode, opcode) == 0)
 		{
-			return node;
+			return (node);
 		}
 		node = node->next;
 	}
-	return NULL;
+	return (NULL);
 }
 
+/**
+ * op_push - Pushes a value onto the stack
+ *
+ * This function pushes a value onto the stack. It takes a pointer to a stack
+ * (stack) and the line number (line_number) where the operation is encountered
+ * as parameters. The value to be pushed is typically provided in the context
+ * of the operation being executed.
+ *
+ * @stack: Pointer to a pointer to the stack.
+ * @line_number: Line number where the push operation is encountered.
+ */
 void op_push(stack_t **stack, unsigned int line_number)
 {
 
@@ -107,6 +104,17 @@ void op_push(stack_t **stack, unsigned int line_number)
 	}
 }
 
+/**
+ * op_pall - Prints all elements of the stack
+ *
+ * This function prints all elements of the stack. It takes a pointer to a
+ * stack (stack) and the line number (line_number) where the operation is
+ * encountered as parameters. The function iterates through the stack
+ * and prints each element in the order they were pushed.
+ *
+ * @stack: Pointer to a pointer to the stack.
+ * @line_number: Line number where the pall operation is encountered.
+ */
 void op_pall(stack_t **stack, unsigned int line_number)
 {
 	stack_t *node;
@@ -134,139 +142,24 @@ void op_pall(stack_t **stack, unsigned int line_number)
 	}
 }
 
+/**
+ * op_pint - Prints the top element of the stack
+ *
+ * This function prints the top element of the stack. It takes
+ * a pointer to a stack (stack) and the line number (line_number)
+ * where the operation is encountered as parameters. The function
+ * prints the value of the top element without removing it.
+ * @stack: Pointer to a pointer to the stack.
+ * @line_number: Line number where the pint operation is encountered.
+ */
 void op_pint(stack_t **stack, unsigned int line_number)
 {
-	if(monty->monty_stack == NULL){
+	if (monty->monty_stack == NULL)
+	{
 		fprintf(stderr, "L%d: can't pint, stack empty\n", line_number);
 		exit(EXIT_FAILURE);
 	}
 
 	printf("%d\n", monty->monty_stack->n);
-}
-
-void op_pop(stack_t **stack, unsigned int line_number)
-{
-	
-}
-
-void list_push_front(stack_t **list, int n)
-{
-	stack_t *new_node;
-
-	UNUSED(list);
-
-	new_node = malloc(sizeof(stack_t));
-
-	if (new_node == NULL)
-	{
-		fprintf(stderr, "Memory allocation error\n");
-		return;
-	}
-
-	new_node->n = n;
-	new_node->prev = NULL;
-	new_node->next = monty->monty_stack;
-
-	if (monty->monty_stack == NULL)
-	{
-		monty->monty_stack = new_node;
-	}
-	else
-	{
-		monty->monty_stack->prev = new_node;
-		monty->monty_stack = new_node;
-	}
-
-	if (monty->tail == NULL)
-	{
-		monty->tail = new_node;
-	}
-}
-
-void list_push_back(stack_t **list, int n)
-{
-	stack_t *new_node;
-
-	UNUSED(list);
-
-	new_node = malloc(sizeof(stack_t));
-
-	if (new_node == NULL)
-	{
-		fprintf(stderr, "Memory allocation error\n");
-		return;
-	}
-
-	new_node->n = n;
-	new_node->next = NULL;
-
-	if (monty->monty_stack == NULL)
-	{
-		new_node->prev = NULL;
-		monty->monty_stack = new_node;
-	}
-	else
-	{
-		stack_t *current = monty->monty_stack;
-		while (current->next != NULL)
-		{
-			current = current->next;
-		}
-		current->next = new_node;
-		new_node->prev = current;
-	}
-
-	if (monty->tail == NULL)
-	{
-		monty->tail = new_node;
-	}
-}
-
-void list_pop_front(stack_t **list)
-{
-	stack_t *temp;
-
-	if (*list == NULL)
-	{
-		fprintf(stderr, "List is empty\n");
-		return;
-	}
-
-	temp = *list;
-	*list = (*list)->next;
-
-	if (*list != NULL)
-	{
-		(*list)->prev = NULL;
-	}
-
-	free(temp);
-}
-
-void list_pop_back(stack_t **list)
-{
-	stack_t *current;
-
-	if (*list == NULL)
-	{
-		fprintf(stderr, "List is empty\n");
-		return;
-	}
-
-	current = *list;
-	while (current->next != NULL)
-	{
-		current = current->next;
-	}
-
-	if (current->prev != NULL)
-	{
-		current->prev->next = NULL;
-	}
-	else
-	{
-		*list = NULL;
-	}
-
-	free(current);
+	UNUSED(stack);
 }
