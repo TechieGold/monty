@@ -57,8 +57,18 @@ void op_nop(stack_t **stack, unsigned int line_number)
  */
 void op_add(stack_t **stack, unsigned int line_number)
 {
+	int s1, s2, sum;
+
 	UNUSED(stack);
 	UNUSED(line_number);
+
+	s1 = monty->monty_stack->n;
+	s2 = monty->monty_stack->next->n;
+	sum = s1 + s2;
+
+	list_pop_front(&(monty->monty_stack));
+
+	monty->monty_stack->n = sum;
 }
 
 
