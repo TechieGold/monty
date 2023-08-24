@@ -62,6 +62,12 @@ void op_add(stack_t **stack, unsigned int line_number)
 	UNUSED(stack);
 	UNUSED(line_number);
 
+	if (!(monty->monty_stack && (monty->monty_stack->next)))
+	{
+		fprintf(stderr, "L%d: can't add, stack too short\n", monty->current_line);
+		exit(EXIT_FAILURE);
+	}
+
 	s1 = monty->monty_stack->n;
 	s2 = monty->monty_stack->next->n;
 	sum = s1 + s2;
