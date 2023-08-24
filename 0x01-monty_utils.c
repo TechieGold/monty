@@ -1,7 +1,5 @@
 #include "utils.h"
 
-
-
 /**
  * _isdigit - Checks if a character is a digit
  *
@@ -24,8 +22,6 @@ int _isdigit(int c)
 		return (0);
 	}
 }
-
-
 
 /**
  * check_digit - Checks if a string represents a valid integer
@@ -62,7 +58,6 @@ int check_digit(const char *number)
 
 	return (1);
 }
-
 
 /**
  * list_push_front - Pushes a new element to the front of a stack
@@ -156,7 +151,6 @@ void list_push_back(stack_t **list, int n)
 	}
 }
 
-
 /**
  * list_pop_front - Pops the element from the front of a stack
  *
@@ -169,21 +163,23 @@ void list_pop_front(stack_t **list)
 {
 	stack_t *temp;
 
-	if (*list == NULL)
+	stack_t **st_ptr = &(monty->monty_stack);
+
+	if (*st_ptr == NULL)
 	{
 		fprintf(stderr, "List is empty\n");
 		return;
 	}
 
-	temp = *list;
-	*list = (*list)->next;
+	temp = *st_ptr;
+	*st_ptr = (*st_ptr)->next;
 
-	if (*list != NULL)
+	if (*st_ptr != NULL)
 	{
-		(*list)->prev = NULL;
+		(*st_ptr)->prev = NULL;
 	}
 
+	UNUSED(temp);
+	UNUSED(list);
 	free(temp);
 }
-
-
