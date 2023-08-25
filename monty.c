@@ -1,6 +1,5 @@
 #include "monty.h"
 
-
 /**
  * init_interpreter - Initializes the Monty interpreter
  *
@@ -49,7 +48,6 @@ void init_interpreter(monty_t **monty, int argc, char **argv)
 	UNUSED(argv);
 }
 
-
 /**
  * init_ops_list - Initializes an operations list
  *
@@ -80,7 +78,6 @@ void init_ops_list(ops_list_t **ops_list)
 
 	/* Add support for more opcodes here */
 }
-
 
 /**
  * handle_command - Handles a command with its arguments
@@ -168,4 +165,44 @@ int parse_command(char *input, monty_t *monty, int ln)
 	free(args);
 	args = NULL;
 	return (status);
+}
+
+/**
+ * cleanup - Performs cleanup tasks before program exit
+ *
+ * This function is intended to perform cleanup tasks and release resources
+ * before the program exits. It can be used to release allocated memory,
+ * close open files, free resources, and perform any necessary finalization.
+ */
+void cleanup(void)
+{
+	op_node_t *opnode = monty->opcodes->head;
+	stack_t *stack = monty->monty_stack;
+
+	if (opnode != NULL)
+	{
+		while (opnode != NULL)
+		{
+			op_node_t *next = opnode->next;
+
+			free(opnode->instruction->opcode);
+			free(opnode->instruction);
+			free(opnode);
+			opnode = next;
+		}
+	}
+
+	if (monty->monty_stack != NULL)
+	{
+		while (stack != NULL)
+		{
+			stack_t *next = stack->next;
+
+			free(stack);
+			stack = next;
+		}
+	}
+
+	free(monty->opcodes);
+	free(monty);
 }

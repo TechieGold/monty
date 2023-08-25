@@ -111,6 +111,8 @@ int parse_command(char *input, monty_t *monty, int ln);
 
 void handle_command(char **args, int ln);
 
+void cleanup(void);
+
 
 
 /* Utility functions to support the program */
