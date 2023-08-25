@@ -25,7 +25,8 @@ char *_strdup(char *str)
 	s_str = malloc(len);
 	if (s_str == NULL)
 	{
-		return (NULL);
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
 	}
 
 	memcpy(s_str, str, len);
@@ -56,7 +57,7 @@ char **tokenize_args(char *line, int *num_tokens)
 	bufsize = MAX_ARGS;
 	args = malloc(bufsize * sizeof(char *));
 
-	if (!args)
+	if (args == NULL)
 	{
 		fprintf(stderr, "Error: malloc failed\n");
 		exit(EXIT_FAILURE);

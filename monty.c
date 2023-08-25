@@ -65,14 +65,15 @@ void init_interpreter(monty_t **monty, int argc, char **argv)
 void init_ops_list(ops_list_t **ops_list)
 {
 	*ops_list = malloc(sizeof(ops_list_t));
-	(*ops_list)->head = NULL;
-	(*ops_list)->count = 0;
 
 	if (*ops_list == NULL)
 	{
 		fprintf(stderr, "Error: malloc failed\n");
 		exit(EXIT_FAILURE);
 	}
+
+	(*ops_list)->head = NULL;
+	(*ops_list)->count = 0;
 
 	ops_add_op("push", op_push);
 	ops_add_op("pall", op_pall);
