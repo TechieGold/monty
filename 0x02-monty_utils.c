@@ -36,3 +36,18 @@ void list_pop_back(stack_t **list)
 
 	free(current);
 }
+
+
+/**
+ * is_in_ascii_range - Checks if an integer value is within the ASCII range
+ *
+ * This function takes an integer value as input and returns true if the value
+ * is within the ASCII range (0 to 127), and false otherwise.
+ *
+ * @value: The integer value to be checked.
+ * Return: true if the value is within the ASCII range, false otherwise.
+ */
+int is_in_ascii_range(int value)
+{
+	return (value >= 0 && value <= 127);
+}

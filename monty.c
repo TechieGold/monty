@@ -79,6 +79,8 @@ void init_ops_list(ops_list_t **ops_list)
 	ops_add_op("mul", op_mul);
 	ops_add_op("div", op_div);
 	ops_add_op("mod", op_mod);
+	ops_add_op("pchar", op_pchar);
+	ops_add_op("pstr", op_pstr);
 	ops_add_op("stack", op_stack_queue);
 	ops_add_op("queue", op_stack_queue);
 

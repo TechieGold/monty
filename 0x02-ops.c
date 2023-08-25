@@ -1,6 +1,5 @@
 #include "monty.h"
 
-
 /**
  * op_mul - Multiplies the top two elements of the stack
  *
@@ -32,7 +31,6 @@ void op_mul(stack_t **stack, unsigned int line_number)
 
 	monty->monty_stack->n = product;
 }
-
 
 /**
  * op_div - Divides the second top element of the stack by the top element
@@ -121,10 +119,23 @@ void op_mod(stack_t **stack, unsigned int line_number)
  */
 void op_pchar(stack_t **stack, unsigned int line_number)
 {
+	stack_t *stack_ptr = monty->monty_stack;
+
 	UNUSED(stack);
 	UNUSED(line_number);
-}
 
+	if (!(monty->monty_stack))
+	{
+		fprintf(stderr, "L%d: can't pchar, stack empty\n", monty->current_line);
+		exit(EXIT_FAILURE);
+	}
+
+	while (stack_ptr != NULL)
+	{
+		printf("%c\n", stack_ptr->n);
+		stack_ptr = stack_ptr->next;
+	}
+}
 
 /**
  * op_pstr - Prints the string starting from the top of the stack
@@ -140,6 +151,25 @@ void op_pchar(stack_t **stack, unsigned int line_number)
  */
 void op_pstr(stack_t **stack, unsigned int line_number)
 {
+	stack_t *stack_ptr = monty->monty_stack;
+
 	UNUSED(stack);
 	UNUSED(line_number);
+
+	if (!(monty->monty_stack))
+	{
+		fprintf(stderr, "\n");
+	}
+
+	while (stack_ptr != NULL)
+	{
+		if (stack_ptr->n == 0)
+			break;
+		else if (is_in_ascii_range(stack_ptr->n))
+		{
+			printf("%c", stack_ptr->n);
+		}
+		stack_ptr = stack_ptr->next;
+	}
+	printf("\n");
 }
