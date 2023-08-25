@@ -19,16 +19,22 @@ void ops_add_op(char *code, op_callback callback)
 
 	list = monty->opcodes;
 	node = (op_node_t *)malloc(sizeof(op_node_t));
-
-	if (node != NULL)
+	if (node == NULL)
 	{
-		node->instruction = (instruction_t *)malloc(sizeof(instruction_t));
-		node->instruction->opcode = (char *)malloc(sizeof(char)
-			* (strlen(code) + 1));
-		strcpy(node->instruction->opcode, code);
-		node->instruction->f = callback;
-		node->next = NULL;
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
 	}
+	node->instruction = (instruction_t *)malloc(sizeof(instruction_t));
+	node->instruction->opcode = (char *)malloc(sizeof(char)
+		* (strlen(code) + 1));
+	if (!(node->instruction) || !(node->instruction->opcode))
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
+	strcpy(node->instruction->opcode, code);
+	node->instruction->f = callback;
+	node->next = NULL;
 	if (list->head == NULL)
 	{
 		list->head = node;

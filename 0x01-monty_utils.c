@@ -78,8 +78,8 @@ void list_push_front(stack_t **list, int n)
 
 	if (new_node == NULL)
 	{
-		fprintf(stderr, "Memory allocation error\n");
-		return;
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
 	}
 
 	new_node->n = n;
@@ -121,8 +121,8 @@ void list_push_back(stack_t **list, int n)
 
 	if (new_node == NULL)
 	{
-		fprintf(stderr, "Memory allocation error\n");
-		return;
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
 	}
 
 	new_node->n = n;

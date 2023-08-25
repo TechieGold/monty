@@ -17,9 +17,15 @@ void init_interpreter(monty_t **monty, int argc, char **argv)
 	FILE *fptr;
 
 	*monty = (monty_t *)malloc(sizeof(monty_t));
+
+	if (monty == NULL)
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
+
 	buffer = NULL;
 	n = 0;
-
 	(*monty)->mode = 0;
 	(*monty)->monty_stack = NULL;
 	(*monty)->tail = NULL;

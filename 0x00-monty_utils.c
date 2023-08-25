@@ -55,6 +55,13 @@ char **tokenize_args(char *line, int *num_tokens)
 
 	bufsize = MAX_ARGS;
 	args = malloc(bufsize * sizeof(char *));
+
+	if (!args)
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
+
 	token = strtok(line, " \n");
 	(*num_tokens) = 0;
 
