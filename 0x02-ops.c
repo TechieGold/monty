@@ -109,7 +109,7 @@ void op_mod(stack_t **stack, unsigned int line_number)
 /**
  * op_pchar - Prints the character value at the top of the stack
  *
- * This function prints the character value represented by the topelement of
+ * This function prints the character value represented by the top element of
  * the stack. It takes a pointer to a stack (stack) and the
  * line number (line_number) where the operation is encountered as parameters.
  * The function prints the character followed by a newline.
