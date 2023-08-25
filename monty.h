@@ -89,7 +89,7 @@ typedef struct ops_list_tag
  * Description: The `monty_t` structure represents the Monty interpreter's
  * state and configuration. It contains information about the operations list,
  * the mode of operation (LIFO or FIFO), the stack data structure,
- * and pointersto the top and tail elements of the stack.
+ * and pointers to the top and tail elements of the stack.
  */
 typedef struct monty
 {
@@ -161,5 +161,23 @@ void op_swap(stack_t **stack, unsigned int line_number);
 void op_add(stack_t **stack, unsigned int line_number);
 
 void op_nop(stack_t **stack, unsigned int line_number);
+
+void op_sub(stack_t **stack, unsigned int line_number);
+
+void op_mul(stack_t **stack, unsigned int line_number);
+
+void op_div(stack_t **stack, unsigned int line_number);
+
+void op_mod(stack_t **stack, unsigned int line_number);
+
+void op_pchar(stack_t **stack, unsigned int line_number);
+
+void op_pstr(stack_t **stack, unsigned int line_number);
+
+void op_rotl(stack_t **stack, unsigned int line_number);
+
+void op_rotr(stack_t **stack, unsigned int line_number);
+
+void op_stack_queue(stack_t **stack, unsigned int line_number);
 
 #endif
