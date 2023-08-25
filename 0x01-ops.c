@@ -114,3 +114,36 @@ void op_swap(stack_t **stack, unsigned int line_number)
 	UNUSED(stack);
 	UNUSED(line_number);
 }
+
+
+/**
+ * op_sub - Substracts the top two elements of the stack
+ *
+ * This function adds the top two elements of the stack and replaces them with
+ * the difference. It takes a pointer to a stack (stack) and the line number
+ * (line_number) where the operation is encountered as parameters.
+ *
+ * @stack: Pointer to a pointer to the stack.
+ * @line_number: Line number where the add operation is encountered.
+ */
+void op_sub(stack_t **stack, unsigned int line_number)
+{
+	int s1, s2, diff;
+
+	UNUSED(stack);
+	UNUSED(line_number);
+
+	if (!(monty->monty_stack && (monty->monty_stack->next)))
+	{
+		fprintf(stderr, "L%d: can't sub, stack too short\n", monty->current_line);
+		exit(EXIT_FAILURE);
+	}
+
+	s1 = monty->monty_stack->n;
+	s2 = monty->monty_stack->next->n;
+	diff = s1 - s2;
+
+	list_pop_front(&(monty->monty_stack));
+
+	monty->monty_stack->n = diff;
+}
