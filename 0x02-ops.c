@@ -13,8 +13,24 @@
  */
 void op_mul(stack_t **stack, unsigned int line_number)
 {
+	int s1, s2, product;
+
 	UNUSED(stack);
 	UNUSED(line_number);
+
+	if (!(monty->monty_stack && (monty->monty_stack->next)))
+	{
+		fprintf(stderr, "L%d: can't mul, stack too short\n", monty->current_line);
+		exit(EXIT_FAILURE);
+	}
+
+	s1 = monty->monty_stack->n;
+	s2 = monty->monty_stack->next->n;
+	product = s1 * s2;
+
+	list_pop_front(&(monty->monty_stack));
+
+	monty->monty_stack->n = product;
 }
 
 
@@ -30,8 +46,29 @@ void op_mul(stack_t **stack, unsigned int line_number)
  */
 void op_div(stack_t **stack, unsigned int line_number)
 {
+	int s1, s2, div;
+
 	UNUSED(stack);
 	UNUSED(line_number);
+
+	if (!(monty->monty_stack && (monty->monty_stack->next)))
+	{
+		fprintf(stderr, "L%d: can't div, stack too short\n", monty->current_line);
+		exit(EXIT_FAILURE);
+	}
+
+	s1 = monty->monty_stack->n;
+	s2 = monty->monty_stack->next->n;
+	if (s1 == 0)
+	{
+		fprintf(stderr, "L%d: division by zero\n", monty->current_line);
+		exit(EXIT_FAILURE);
+	}
+	div = s2 / s1;
+
+	list_pop_front(&(monty->monty_stack));
+
+	monty->monty_stack->n = div;
 }
 
 /**
@@ -46,8 +83,29 @@ void op_div(stack_t **stack, unsigned int line_number)
  */
 void op_mod(stack_t **stack, unsigned int line_number)
 {
+	int s1, s2, mod;
+
 	UNUSED(stack);
 	UNUSED(line_number);
+
+	if (!(monty->monty_stack && (monty->monty_stack->next)))
+	{
+		fprintf(stderr, "L%d: can't mod, stack too short\n", monty->current_line);
+		exit(EXIT_FAILURE);
+	}
+
+	s1 = monty->monty_stack->n;
+	s2 = monty->monty_stack->next->n;
+	if (s1 == 0)
+	{
+		fprintf(stderr, "L%d: division by zero\n", monty->current_line);
+		exit(EXIT_FAILURE);
+	}
+	mod = s1 - s2;
+
+	list_pop_front(&(monty->monty_stack));
+
+	monty->monty_stack->n = mod;
 }
 
 /**

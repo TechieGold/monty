@@ -76,6 +76,11 @@ void init_ops_list(ops_list_t **ops_list)
 	ops_add_op("swap", op_swap);
 	ops_add_op("add", op_add);
 	ops_add_op("sub", op_sub);
+	ops_add_op("mul", op_mul);
+	ops_add_op("div", op_div);
+	ops_add_op("mod", op_mod);
+	ops_add_op("stack", op_stack_queue);
+	ops_add_op("queue", op_stack_queue);
 
 	/* Add support for more opcodes here */
 }

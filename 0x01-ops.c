@@ -141,7 +141,7 @@ void op_sub(stack_t **stack, unsigned int line_number)
 
 	s1 = monty->monty_stack->n;
 	s2 = monty->monty_stack->next->n;
-	diff = s1 - s2;
+	diff = s2 - s1;
 
 	list_pop_front(&(monty->monty_stack));
 
