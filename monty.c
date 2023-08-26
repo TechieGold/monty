@@ -1,5 +1,6 @@
 #include "monty.h"
 
+
 /**
  * init_interpreter - Initializes the Monty interpreter
  *
@@ -13,8 +14,6 @@
 void init_interpreter(monty_t **monty, int argc, char **argv)
 {
 	size_t n;
-	char *buffer;
-	FILE *fptr;
 
 	*monty = (monty_t *)malloc(sizeof(monty_t));
 
@@ -24,7 +23,7 @@ void init_interpreter(monty_t **monty, int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
-	buffer = NULL;
+	(*monty)->buffer = NULL;
 	n = 0;
 	(*monty)->mode = 0;
 	(*monty)->monty_stack = NULL;
@@ -33,23 +32,22 @@ void init_interpreter(monty_t **monty, int argc, char **argv)
 
 	init_ops_list(&((*monty)->opcodes));
 
-	fptr = fopen(argv[1], "r");
+	(*monty)->fptr = fopen(argv[1], "r");
 
-	if (fptr != NULL)
+	if ((*monty)->fptr != NULL)
 	{
-		while (getline(&buffer, &n, fptr) != -1)
+		while (getline(&((*monty)->buffer), &n, (*monty)->fptr) != -1)
 		{
-			parse_command(buffer, *monty, (*monty)->current_line);
+			parse_command((*monty)->buffer, *monty, (*monty)->current_line);
 			(*monty)->current_line += 1;
 		}
-		fclose(fptr);
 	}
 	else
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-	free(buffer);
+
 	UNUSED(argc);
 	UNUSED(argv);
 }
@@ -104,9 +102,12 @@ void init_ops_list(ops_list_t **ops_list)
  *
  * @args: Array of strings containing the command and its arguments.
  * @ln: Line number where the command is encountered.
+ * @num_tokens: Number of argument tokens
  */
-void handle_command(char **args, int ln)
+void handle_command(char **args, int ln, int num_tokens)
 {
+	int i;
+
 	monty->top = args;
 
 	if (args[0][0] != '#')
@@ -121,6 +122,13 @@ void handle_command(char **args, int ln)
 		else
 		{
 			fprintf(stderr, "L%d: unknown instruction %s\n", ln, args[0]);
+			for (i = 0; i < num_tokens; i++)
+			{
+				free(args[i]);
+				args[i] = NULL;
+			}
+			free(args);
+			cleanup();
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -168,7 +176,7 @@ int parse_command(char *input, monty_t *monty, int ln)
 	if (args == NULL)
 		return (0);
 
-	handle_command(args, ln);
+	handle_command(args, ln, num_tokens);
 
 	input = NULL;
 
@@ -192,7 +200,6 @@ int parse_command(char *input, monty_t *monty, int ln)
 void cleanup(void)
 {
 	op_node_t *opnode = monty->opcodes->head;
-	stack_t *stack = monty->monty_stack;
 
 	if (opnode != NULL)
 	{
@@ -209,15 +216,16 @@ void cleanup(void)
 
 	if (monty->monty_stack != NULL)
 	{
-		while (stack != NULL)
+		while (monty->monty_stack != NULL)
 		{
-			stack_t *next = stack->next;
-
-			free(stack);
-			stack = next;
+			list_pop_front(&(monty->monty_stack));
 		}
+
+		/* free(monty->tail); */
 	}
 
 	free(monty->opcodes);
+	fclose(monty->fptr);
+	free(monty->buffer);
 	free(monty);
 }

@@ -86,6 +86,8 @@ typedef struct ops_list_tag
  * @tail: Pointer to the tail of the stack (used for queues).
  * @top: Pointer to the top of the stack (used for stack).
  * @current_line: Current line number being processed.
+ * @fptr: File object
+ * @buffer: Reader buffer
  * Description: The `monty_t` structure represents the Monty interpreter's
  * state and configuration. It contains information about the operations list,
  * the mode of operation (LIFO or FIFO), the stack data structure,
@@ -99,6 +101,8 @@ typedef struct monty
 	stack_t *tail;
 	char **top;
 	int current_line;
+	FILE *fptr;
+	char *buffer;
 } monty_t;
 
 extern monty_t *monty;
@@ -109,7 +113,7 @@ void init_ops_list(ops_list_t **ops_list);
 
 int parse_command(char *input, monty_t *monty, int ln);
 
-void handle_command(char **args, int ln);
+void handle_command(char **args, int ln, int num_tokens);
 
 void cleanup(void);
 

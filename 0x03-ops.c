@@ -52,4 +52,9 @@ void op_stack_queue(stack_t **stack, unsigned int line_number)
 {
 	UNUSED(stack);
 	UNUSED(line_number);
+
+	if (monty->mode == 0)
+		monty->mode = 1;
+	else
+		monty->mode = 0;
 }
